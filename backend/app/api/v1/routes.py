@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.api.v1 import api_v1_bp
 from app.extensions import db
 from app.models import User
+from app.decorators import admin_required
 
 
 @api_v1_bp.route("/health", methods=["GET"])
@@ -41,6 +42,23 @@ def profile():
                 "status": "success",
                 "message": "You accessed a protected route!",
                 "user": user.to_dict(),
+            }
+        ),
+        200,
+    )
+
+
+@api_v1_bp.route("/admin/dashboard", methods=["GET"])
+@jwt_required()
+@admin_required
+def admin_dashboard():
+    """A highly protected route for admins only."""
+    return (
+        jsonify(
+            {
+                "status": "success",
+                "message": "Welcome to the Admin Dashboard!",
+                "secret_data": "Here is data only admins can see.",
             }
         ),
         200,
