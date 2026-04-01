@@ -21,7 +21,10 @@ def create_app(config_name="dev"):
 
     # Import and register the V1 API blueprint
     from app.api.v1 import api_v1_bp
+    app.register_blueprint(api_v1_bp, url_prefix='/api/v1')
 
-    app.register_blueprint(api_v1_bp, url_prefix="/api/v1")
+    # Register the global errors blueprint
+    from app.errors import errors_bp
+    app.register_blueprint(errors_bp)
 
     return app
