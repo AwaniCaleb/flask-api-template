@@ -16,6 +16,9 @@ def create_app(config_name="dev"):
     # Enable CORS
     cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
 
+    # Import models so Flask-Migrate can track them
+    from app import models
+
     # Import and register the V1 API blueprint
     from app.api.v1 import api_v1_bp
 
